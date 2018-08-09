@@ -28,13 +28,18 @@
         {% if all_plugins %}
         <li class="nav-header">Plugin Settings</li>
         {% for plugin in all_plugins %}
-            {% if plugin.name == active_nav.get('key') %}
-                <li class="active"><a href="{{ url_for('management.settings', plugin=plugin.name) }}">{{ plugin.name.title() }}</a></li>
-            {% else %}
-                <li><a href="{{ url_for('management.settings', plugin=plugin.name) }}">{{ plugin.name.title() }}</a></li>
-            {% endif %}
+            <li {% if plugin.name == active_nav.get('key') %}class="active"{% endif %}>
+                <a href="{{ url_for('management.settings', plugin=plugin.name) }}">{{ plugin.name.title() }}</a>
+            </li>
         {% endfor %}
         {% endif %}
+
+        {% for view, text in run_hook('flaskbb_tpl_admin_settings_sidebar', is_markup=False) %}
+            <li>
+                <a href="{{ url_for(view) }}">{{ text }}</a>
+            </li>
+        {% endfor %}
+
         </ul>
     </div>
 </div><!--/.col-md-3 -->
